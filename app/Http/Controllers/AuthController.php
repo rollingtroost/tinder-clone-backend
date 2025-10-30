@@ -63,6 +63,9 @@ class AuthController extends Controller
 
     /**
      * Revoke the current user's access token.
+     * 
+     * @authenticated
+     * @return \Illuminate\Http\JsonResponse
      */
     public function logout(Request $request)
     {
@@ -78,6 +81,9 @@ class AuthController extends Controller
 
     /**
      * Get the authenticated user's profile.
+     * 
+     * @authenticated
+     * @return \Illuminate\Http\JsonResponse
      */
     public function me(Request $request)
     {
