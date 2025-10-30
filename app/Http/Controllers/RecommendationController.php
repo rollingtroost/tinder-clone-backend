@@ -73,11 +73,20 @@ class RecommendationController extends Controller
 
             $query->select('*')
                 ->selectRaw("$haversine as distance_km", [$lat, $lng, $lat])
-                ->selectRaw('(CASE WHEN ? IS NULL THEN 0.5 ELSE (1 - LEAST(ABS(age - ?), 50)/50.0) END) as compatibility_score', [$userAge, $userAge])
-                // Push NULL distances last, then sort by distance ASC and compatibility DESC
-                ->orderByRaw('distance_km IS NULL ASC')
-                ->orderBy('distance_km')
-                ->orderByDesc('compatibility_score');
+                // Use COALESCE to avoid Postgres indeterminate parameter type when checking NULL
+                ->selectRaw('COALESCE(1 - LEAST(ABS(age - ?), 50)/50.0, 0.5) as compatibility_score', [$userAge]);
+
+            // Sorting strategy depends on DB driver behavior with NULLs and alias usage
+            if ($driver === 'pgsql') {
+                // Postgres: use NULLS LAST explicitly and avoid alias-in-expression issues
+                $query->orderByRaw('distance_km ASC NULLS LAST')
+                      ->orderByDesc('compatibility_score');
+            } else {
+                // MySQL/others: push NULL distances last via boolean ordering, then by distance and compatibility
+                $query->orderByRaw('distance_km IS NULL ASC')
+                      ->orderBy('distance_km')
+                      ->orderByDesc('compatibility_score');
+            }
 
             $total = (clone $query)->count();
             $items = $query->forPage($page, $limit)->get();
