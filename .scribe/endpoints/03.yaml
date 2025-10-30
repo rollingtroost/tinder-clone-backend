@@ -1,0 +1,62 @@
+name: Interactions
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/swipes
+    metadata:
+      custom: []
+      groupName: Interactions
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Swipe action.'
+      description: "Accepts {person_id, action: 'like'|'dislike'} and records the swipe."
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      person_id:
+        custom: []
+        name: person_id
+        description: "The target person's ID."
+        required: true
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      action:
+        custom: []
+        name: action
+        description: "The swipe action ('like' or 'dislike')."
+        required: true
+        example: like
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      person_id: 12
+      action: like
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
