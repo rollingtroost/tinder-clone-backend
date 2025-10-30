@@ -1,4 +1,4 @@
-name: Endpoints
+name: Authentication
 description: ''
 endpoints:
   -
@@ -8,11 +8,11 @@ endpoints:
     uri: api/auth/register
     metadata:
       custom: []
-      groupName: Endpoints
+      groupName: Authentication
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Register a new user and issue a Passport token.'
+      title: Register.
       description: ''
       authenticated: false
       deprecated: false
@@ -75,11 +75,11 @@ endpoints:
     uri: api/auth/login
     metadata:
       custom: []
-      groupName: Endpoints
+      groupName: Authentication
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Log in an existing user and issue a Passport token.'
+      title: 'Log in.'
       description: ''
       authenticated: false
       deprecated: false
@@ -130,12 +130,12 @@ endpoints:
     uri: api/auth/logout
     metadata:
       custom: []
-      groupName: Endpoints
+      groupName: Authentication
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: "Revoke the current user's access token."
-      description: ''
+      title: 'Log out.'
+      description: "Revoke the current user's access token."
       authenticated: true
       deprecated: false
     headers:
@@ -150,50 +150,6 @@ endpoints:
     cleanBodyParameters: []
     fileParameters: []
     responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/user
-    metadata:
-      custom: []
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: "Get the authenticated user's profile."
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
     responseFields: []
     auth:
       - headers

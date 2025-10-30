@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     /**
-     * Register a new user and issue a Passport token.
+     * Register.
+     * 
+     * @group Authentication
      */
     public function register(Request $request)
     {
@@ -35,7 +37,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Log in an existing user and issue a Passport token.
+     * Log in.
+     * 
+     * @group Authentication
      */
     public function login(Request $request)
     {
@@ -62,8 +66,10 @@ class AuthController extends Controller
     }
 
     /**
+     * Log out.
      * Revoke the current user's access token.
      * 
+     * @group Authentication
      * @authenticated
      * @return \Illuminate\Http\JsonResponse
      */
@@ -80,8 +86,10 @@ class AuthController extends Controller
     }
 
     /**
+     * Get profile.
      * Get the authenticated user's profile.
      * 
+     * @group Profile
      * @authenticated
      * @return \Illuminate\Http\JsonResponse
      */
