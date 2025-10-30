@@ -15,11 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Seed a default user for local development and testing
+        User::firstOrCreate(
+            ['email' => 'lovehunter@tinder-clone.com'],
+            [
+                'name' => 'Love Hunter',
+                // Password casting in User model will hash this value
+                'password' => 'password',
+            ]
+        );
     }
 }
