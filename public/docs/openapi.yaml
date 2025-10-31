@@ -1,0 +1,402 @@
+openapi: 3.0.3
+info:
+  title: 'tinder-clone-backend API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'https://tinder-clone-backend-main-ecmhnd.laravel.cloud'
+tags:
+  -
+    name: Authentication
+    description: ''
+  -
+    name: Interactions
+    description: ''
+  -
+    name: Matches
+    description: ''
+  -
+    name: Profile
+    description: ''
+  -
+    name: Recommendations
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []
+paths:
+  /api/auth/register:
+    post:
+      summary: Register.
+      operationId: register
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: b
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: zbailey@example.net
+                  nullable: false
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: '-0pBNvYgxw'
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/auth/login:
+    post:
+      summary: 'Log in.'
+      operationId: logIn
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: gbailey@example.net
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: '|]|{+-'
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/auth/logout:
+    post:
+      summary: 'Log out.'
+      operationId: logOut
+      description: "Revoke the current user's access token."
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+  /api/swipes:
+    post:
+      summary: 'Swipe action.'
+      operationId: swipeAction
+      description: "Accepts {person_id, action: 'like'|'dislike'} and records the swipe."
+      parameters: []
+      responses: {  }
+      tags:
+        - Interactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                person_id:
+                  type: integer
+                  description: "The target person's ID."
+                  example: 12
+                  nullable: false
+                action:
+                  type: string
+                  description: "The swipe action ('like' or 'dislike')."
+                  example: like
+                  nullable: false
+              required:
+                - person_id
+                - action
+  /api/likes:
+    get:
+      summary: 'List likes.'
+      operationId: listLikes
+      description: 'Returns a paginated list of persons the current user liked, with optional mutual-only filter.'
+      parameters:
+        -
+          in: query
+          name: page
+          description: 'The page number. Defaults to 1.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'The page number. Defaults to 1.'
+            example: 1
+            nullable: false
+        -
+          in: query
+          name: limit
+          description: 'The page size. Defaults to 20.'
+          example: 20
+          required: false
+          schema:
+            type: integer
+            description: 'The page size. Defaults to 20.'
+            example: 20
+            nullable: false
+        -
+          in: query
+          name: mutual_only
+          description: 'Filter to only mutual likes. Defaults to false.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Filter to only mutual likes. Defaults to false.'
+            example: true
+            nullable: false
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Matches
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 16
+                  nullable: false
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: false
+                mutual_only:
+                  type: boolean
+                  description: ''
+                  example: true
+                  nullable: false
+  /api/profile/user:
+    get:
+      summary: 'Get profile.'
+      operationId: getProfile
+      description: "Get the authenticated user's profile."
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Profile
+  /api/person:
+    post:
+      summary: 'Upsert profile.'
+      operationId: upsertProfile
+      description: "Create or update the authenticated user's Person profile."
+      parameters: []
+      responses: {  }
+      tags:
+        - Profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The display name.'
+                  example: architecto
+                  nullable: false
+                age:
+                  type: integer
+                  description: 'The age (minimum 18).'
+                  example: 16
+                  nullable: false
+                pictures:
+                  type: array
+                  description: 'Between 1 and 6 image URLs.'
+                  example:
+                    - architecto
+                  items:
+                    type: string
+                latitude:
+                  type: number
+                  description: 'Latitude between -90 and 90.'
+                  example: 4326.41688
+                  nullable: false
+                longitude:
+                  type: number
+                  description: 'Longitude between -180 and 180.'
+                  example: 4326.41688
+                  nullable: false
+                bio:
+                  type: string
+                  description: 'optional A short bio (max 255 characters).'
+                  example: architecto
+                  nullable: true
+                city:
+                  type: string
+                  description: 'optional The city (max 255 characters).'
+                  example: architecto
+                  nullable: true
+              required:
+                - name
+                - age
+                - pictures
+                - latitude
+                - longitude
+  /api/recommendations:
+    get:
+      summary: 'Get recommendations.'
+      operationId: getRecommendations
+      description: "Returns a paginated list of recommended persons sorted by proximity and compatibility.\nExcludes persons the current user has already swiped (like or dislike)."
+      parameters:
+        -
+          in: query
+          name: page
+          description: 'The page number. Defaults to 1.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'The page number. Defaults to 1.'
+            example: 1
+            nullable: false
+        -
+          in: query
+          name: limit
+          description: 'The page size. Defaults to 20.'
+          example: 20
+          required: false
+          schema:
+            type: integer
+            description: 'The page size. Defaults to 20.'
+            example: 20
+            nullable: false
+        -
+          in: query
+          name: lat
+          description: "Required if user has no saved location. Latitude of the user's location."
+          example: -6.2
+          required: false
+          schema:
+            type: number
+            description: "Required if user has no saved location. Latitude of the user's location."
+            example: -6.2
+            nullable: false
+        -
+          in: query
+          name: lng
+          description: "Required if user has no saved location. Longitude of the user's location."
+          example: 106.8166
+          required: false
+          schema:
+            type: number
+            description: "Required if user has no saved location. Longitude of the user's location."
+            example: 106.8166
+            nullable: false
+        -
+          in: query
+          name: age
+          description: "Optional current user's age to improve compatibility scoring."
+          example: 25
+          required: false
+          schema:
+            type: integer
+            description: "Optional current user's age to improve compatibility scoring."
+            example: 25
+            nullable: false
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Recommendations
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+                  description: 'Must be at least 1.'
+                  example: 16
+                  nullable: false
+                limit:
+                  type: integer
+                  description: 'Must be at least 1. Must not be greater than 100.'
+                  example: 22
+                  nullable: false
+                lat:
+                  type: number
+                  description: 'Must be between -90 and 90.'
+                  example: -90
+                  nullable: true
+                lng:
+                  type: number
+                  description: 'Must be between -180 and 180.'
+                  example: -179
+                  nullable: true
+                age:
+                  type: integer
+                  description: 'Must be at least 18. Must not be greater than 120.'
+                  example: 17
+                  nullable: true
