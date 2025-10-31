@@ -15,7 +15,9 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Get recommendations.'
-      description: 'Returns a paginated list of recommended persons sorted by proximity and compatibility.'
+      description: |-
+        Returns a paginated list of recommended persons sorted by proximity and compatibility.
+        Excludes persons the current user has already swiped (like or dislike).
       authenticated: true
       deprecated: false
     headers:

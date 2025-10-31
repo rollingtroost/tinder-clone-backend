@@ -11,6 +11,7 @@ class RecommendationController extends Controller
     /**
      * Get recommendations.
      * Returns a paginated list of recommended persons sorted by proximity and compatibility.
+     * Excludes persons the current user has already swiped (like or dislike).
      * 
      * @group Recommendations
      * @authenticated
@@ -64,6 +65,14 @@ class RecommendationController extends Controller
         if ($userPerson) {
             $query->where('id', '!=', $userPerson->id);
         }
+
+        // Exclude persons already swiped by the current user (like or dislike)
+        $query->whereNotExists(function ($q) use ($user) {
+            $q->selectRaw(1)
+              ->from('swipes')
+              ->whereColumn('swipes.target_person_id', 'persons.id')
+              ->where('swipes.swiper_user_id', $user->id);
+        });
 
         // Prefer SQL Haversine on drivers that support trig functions; fallback to PHP for sqlite
         $driver = $query->getModel()->getConnection()->getDriverName();
