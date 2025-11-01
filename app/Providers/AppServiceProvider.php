@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Carbon\CarbonInterval;
-use Laravel\Passport\Passport;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -24,10 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::tokensExpireIn(CarbonInterval::days(15));
-        Passport::refreshTokensExpireIn(CarbonInterval::days(30));
-        Passport::personalAccessTokensExpireIn(CarbonInterval::months(6));
-
         // Define a per-user swipe rate limit: max 100 swipes per minute
         RateLimiter::for('swipes', function (Request $request) {
             $key = optional($request->user())->id ?? $request->ip();
